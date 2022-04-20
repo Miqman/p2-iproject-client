@@ -62,7 +62,9 @@ export default {
               <p style="font-size: 40px">Best Information of Anime</p>
             </div>
             <div class="btn-topimg d-none d-md-block">
-              <a class="btn btn-primary" href="">Mulai</a>
+              <router-link class="btn btn-primary" to="/anime"
+                >Mulai</router-link
+              >
             </div>
             <div class="hero"></div>
             <img src="../assets/gifCover.gif" class="d-block w-100" alt="..." />
@@ -93,14 +95,15 @@ export default {
       <div class="cards-wrapper">
         <div
           class="card"
-          style="width: 15rem"
+          style="width: 14rem"
           v-for="el in popular"
           :key="el.id"
         >
           <img
             :src="el.entry.images.jpg.image_url"
             class="card-img-top"
-            style="object-fit: scale-down"
+            height="200"
+            style="object-fit: cover"
             alt="..."
           />
           <div class="card-body">

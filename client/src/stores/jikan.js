@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-const bodyFormData = new FormData();
 
 let baseUrl = "http://localhost:3000";
 export const useJikanStore = defineStore({
@@ -11,27 +10,31 @@ export const useJikanStore = defineStore({
       popular: [],
       allAnime: [],
       animeDetail: [],
+      genres: "",
+      newProducer: "",
+      user: "",
       isLogin: false,
     };
   },
   getters: {},
   actions: {
     async addProfile(data) {
-      console.log(data, "<<<<<<<<<<<");
+      console.log(data, "=========");
       try {
-        bodyFormData.append("imageUrl", data.imageUrl);
-        bodyFormData.append("bio", data.bio);
-        bodyFormData.append("name", data.name);
-        const res = await axios.post(
-          `http://localhost:3000/profileAdd`,
-          { data: bodyFormData },
-          {
-            headers: {
-              access_token: localStorage.access_token,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        let file = new FormData();
+        file.append("name", data.name);
+        file.append("bio", data.bio);
+        file.append("imageUrl", data.imageUrl);
+
+        console.log(file, "<<<<<<<");
+        const res = await axios({
+          method: "post",
+          url: `http://localhost:3000/profileAdd`,
+          data: file,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
 
         console.log(res, "<<<<<");
       } catch (error) {
@@ -49,6 +52,7 @@ export const useJikanStore = defineStore({
         localStorage.id = res.data.id;
         localStorage.name = res.data.username;
 
+        this.user = localStorage.name;
         this.isLogin = true;
         this.router.push("/");
       } catch (error) {
@@ -107,6 +111,15 @@ export const useJikanStore = defineStore({
         });
 
         this.animeDetail = res.data.data;
+        let jenis = res.data.data.genres;
+        jenis = jenis.map((el) => el.name);
+        this.genres = jenis.join(", ");
+
+        let producer = res.data.data.producers;
+        producer = producer.map((el) => el.name);
+        this.newProducer = producer.join(", ");
+
+        console.log(this.animeDetail);
         this.router.push(`/detail/${id}`);
       } catch (error) {
         console.log(error);

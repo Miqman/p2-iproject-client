@@ -14,6 +14,10 @@ export default {
   },
   methods: {
     ...mapActions(useJikanStore, ["addProfile"]),
+    imgHandle: function (e) {
+      const img = e.target.files;
+      this.profile.imageUrl = img[0];
+    },
   },
 };
 </script>
@@ -60,12 +64,7 @@ export default {
                 <label for="formFile" class="form-label"
                   >file type jpg/png</label
                 >
-                <input
-                  class="form-control"
-                  type="file"
-                  name="imageUrl"
-                  @input="(event) => (profile.imageUrl = event.target.value)"
-                />
+                <input class="form-control" type="file" @change="imgHandle" />
               </div>
 
               <!-- Submit button -->

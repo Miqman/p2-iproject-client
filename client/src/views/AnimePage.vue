@@ -31,7 +31,8 @@ export default {
             <img
               :src="el.images.jpg.image_url"
               class="card-img-top"
-              style="height: 150px; object-fit: cover"
+              height="180"
+              style="object-fit: cover"
               alt="..."
             />
             <div class="card-body">

@@ -20,4 +20,15 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  const authen = localStorage.getItem("access_token");
+
+  if ((to.name === "login" || to.name === "register") && authen)
+    next({ name: "homePage" });
+  else if (to.name === "detail" && !authen) next({ name: "login" });
+  else next();
+  // ...
+  // explicitly return false to cancel the navigation
+});
+
 export default router;
