@@ -5,7 +5,7 @@ import { useJikanStore } from "../stores/jikan";
 export default {
   methods: {
     btnLogout() {
-      this.$gAuth.signOut();
+      // this.$gAuth.signOut();
       localStorage.clear();
       this.$router.push("/login");
     },

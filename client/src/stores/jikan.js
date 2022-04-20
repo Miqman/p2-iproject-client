@@ -13,6 +13,9 @@ export const useJikanStore = defineStore({
       genres: "",
       newProducer: "",
       user: "",
+      profile: [],
+      favData: [],
+      isProfile: false,
       isLogin: false,
     };
   },
@@ -36,7 +39,33 @@ export const useJikanStore = defineStore({
           },
         });
 
-        console.log(res, "<<<<<");
+        this.showProfile();
+        this.router.push("/profile");
+        // console.log(res, "<<<<<");
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+      }
+    },
+
+    async showProfile() {
+      try {
+        const res = await axios({
+          method: "get",
+          url: `http://localhost:3000/profile`,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+
+        // console.log(res, "=======");
+        if (res.data.data) {
+          this.profile = res.data.data;
+          this.isProfile = false;
+        } else {
+          this.isProfile = true;
+          this.profile = [];
+        }
       } catch (error) {
         console.log(error);
         console.log(error.response);
@@ -80,7 +109,7 @@ export const useJikanStore = defineStore({
 
         this.popular = res.data.data;
 
-        // console.log(res.data);
+        // console.log(res.data.data, "<<<<<");
         // console.log(res);
       } catch (error) {
         console.log(error);
@@ -91,9 +120,10 @@ export const useJikanStore = defineStore({
     async showAnime() {
       try {
         const res = await axios.get(`http://localhost:3000/anime`);
-        console.log(res.data.data.data, "<<<<<<<");
+        // console.log(res.data.data.data, "<<<<<<<");
 
         this.allAnime = res.data.data.data;
+        // console.log(res.data.data.data, "><><><><");
       } catch (error) {
         console.log(error);
         console.log(error.response);
@@ -119,8 +149,42 @@ export const useJikanStore = defineStore({
         producer = producer.map((el) => el.name);
         this.newProducer = producer.join(", ");
 
-        console.log(this.animeDetail);
+        // console.log(this.animeDetail);
         this.router.push(`/detail/${id}`);
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+      }
+    },
+
+    async btnFavorite(id) {
+      try {
+        const res = await axios({
+          method: "post",
+          url: `${baseUrl}/fav/${id}`,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+
+        this.router.push("/profile");
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+      }
+    },
+
+    async showFav() {
+      try {
+        const res = await axios({
+          method: "get",
+          url: `http://localhost:3000/fav`,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+        this.favData = res.data.data;
+        // console.log(this.favData, "<<<<<<<<");
       } catch (error) {
         console.log(error);
         console.log(error.response);

@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useJikanStore } from "../stores/jikan";
 import NavBar from "../components/NavBar.vue";
 
@@ -9,13 +9,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(useJikanStore, ["showAnime"]),
+    ...mapActions(useJikanStore, ["showAnime", "btnFavorite", "showDetail"]),
   },
   computed: {
     ...mapState(useJikanStore, ["allAnime"]),
+    ...mapWritableState(useJikanStore, ["isLogin"]),
   },
   created() {
     this.showAnime();
+    this.showDetail(this.$route.params.id);
   },
 };
 </script>
@@ -44,9 +46,16 @@ export default {
 
               <a
                 href=""
-                class="btn btn-primary"
+                class="btn btn-primary me-2"
                 @click.prevent="$router.push('/detail/' + el.mal_id)"
                 >Detail</a
+              >
+              <a
+                class="btn btn-outline-success"
+                href=""
+                @click.prevent="btnFavorite(el.mal_id)"
+                v-if="isLogin === true"
+                >add favorite</a
               >
             </div>
           </div>

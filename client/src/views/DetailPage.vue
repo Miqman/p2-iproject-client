@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useJikanStore } from "../stores/jikan";
 import NavBar from "../components/NavBar.vue";
 
@@ -13,10 +13,11 @@ export default {
     NavBar,
   },
   methods: {
-    ...mapActions(useJikanStore, ["showDetail"]),
+    ...mapActions(useJikanStore, ["showDetail", "btnFavorite"]),
   },
   computed: {
     ...mapState(useJikanStore, ["animeDetail", "genres", "newProducer"]),
+    ...mapWritableState(useJikanStore, ["isLogin"]),
   },
   created() {
     this.showDetail(this.$route.params.id);
@@ -79,7 +80,18 @@ export default {
           <p class="card-text">
             {{ animeDetail.type }}
           </p>
-          <a :href="animeDetail.trailer.url" class="btn btn-primary">Trailer</a>
+          <a
+            :href="animeDetail.trailer.url"
+            class="btn btn-outline-primary me-2"
+            >Trailer</a
+          >
+          <a
+            class="btn btn-outline-success"
+            href=""
+            @click.prevent="btnFavorite(animeDetail.mal_id)"
+            v-if="isLogin === true"
+            >add favorite</a
+          >
         </div>
         <div class="card-footer text-muted text-center">
           {{ animeDetail.aired.string }}

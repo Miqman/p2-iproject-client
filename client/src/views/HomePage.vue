@@ -90,7 +90,7 @@ export default {
         </button>
       </div>
     </div>
-    <div class="container">
+    <div class="container mt-4">
       <h1>Popular Anime</h1>
       <div class="cards-wrapper">
         <div
@@ -113,7 +113,12 @@ export default {
               <p class="card-text"></p>
             </h6>
 
-            <a href="#" class="btn btn-primary">Detail</a>
+            <a
+              href=""
+              class="btn btn-primary"
+              @click.prevent="$router.push('/detail/' + el.entry.mal_id)"
+              >Detail</a
+            >
           </div>
         </div>
       </div>
