@@ -10,6 +10,7 @@ export const useJikanStore = defineStore({
       action: [],
       popular: [],
       allAnime: [],
+      animeDetail: [],
       isLogin: false,
     };
   },
@@ -86,9 +87,27 @@ export const useJikanStore = defineStore({
     async showAnime() {
       try {
         const res = await axios.get(`http://localhost:3000/anime`);
-        // console.log(res.data.data.data, "<<<<<<<");
+        console.log(res.data.data.data, "<<<<<<<");
 
         this.allAnime = res.data.data.data;
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+      }
+    },
+
+    async showDetail(id) {
+      try {
+        const res = await axios({
+          method: "get",
+          url: `${baseUrl}/anime/${id}`,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+
+        this.animeDetail = res.data.data;
+        this.router.push(`/detail/${id}`);
       } catch (error) {
         console.log(error);
         console.log(error.response);
