@@ -10,7 +10,7 @@ export default {
     NavBar,
   },
   methods: {
-    ...mapActions(useJikanStore, ["showProfile", "showFav"]),
+    ...mapActions(useJikanStore, ["showProfile", "showFav", "btnDelete"]),
   },
   computed: {
     ...mapState(useJikanStore, ["profile", "favData"]),
@@ -92,6 +92,12 @@ export default {
                 Score
                 <p class="card-text">{{ el.post.score }}</p>
               </h6>
+              <a
+                class="btn btn-outline-danger"
+                href=""
+                @click.prevent="btnDelete(el.post.id)"
+                >delete</a
+              >
             </div>
           </div>
         </div>
@@ -115,16 +121,6 @@ export default {
 
 img {
   display: block;
-}
-
-.btn {
-  display: inline-block;
-  font: inherit;
-  background: none;
-  border: none;
-  color: inherit;
-  padding: 0;
-  cursor: pointer;
 }
 
 .btn:focus {

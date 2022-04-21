@@ -1,5 +1,5 @@
 <script>
-import { mapWritableState } from "pinia";
+import { mapState, mapWritableState } from "pinia";
 import { useJikanStore } from "../stores/jikan";
 
 export default {
@@ -12,6 +12,7 @@ export default {
   },
 
   computed: {
+    ...mapState(useJikanStore, ["user"]),
     ...mapWritableState(useJikanStore, ["isLogin"]),
   },
 };
@@ -20,7 +21,7 @@ export default {
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="#">{{ user }}</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -42,6 +43,11 @@ export default {
           <li class="nav-item" v-if="isLogin === true">
             <router-link class="nav-link active" to="/profile"
               >Profile</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link active" to="/anime"
+              >list Anime</router-link
             >
           </li>
         </ul>

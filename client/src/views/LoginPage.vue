@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useJikanStore } from "../stores/jikan";
 
 export default {
@@ -13,7 +13,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(useJikanStore, ["loginHandle"]),
+    ...mapActions(useJikanStore, ["loginHandle", "quoteRandom"]),
+  },
+  computed: {
+    ...mapState(useJikanStore, ["quote"]),
+  },
+  created() {
+    this.quoteRandom();
   },
 };
 </script>
@@ -58,23 +64,30 @@ export default {
                   </button>
                 </div>
               </div>
+              <div class="text-center justify-content-center my-3 px-3">
+                <router-link to="/">Home</router-link>
+              </div>
             </div>
             <div class="bottom text-center mb-5">
               <p href="#" class="sm-text mx-auto mb-3">
                 Don't have an account?
               </p>
-              <button class="btn btn-white ml-2">Registrer</button>
+              <button
+                class="btn btn-white ml-2"
+                @click.prevent="this.$router.push('/register')"
+              >
+                Registrer
+              </button>
             </div>
           </div>
           <div class="card card2">
-            <div class="my-auto mx-md-5 px-md-5 right">
-              <h3 class="text-white">We are more than just a company</h3>
-              <small class="text-white"
-                >Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat.</small
-              >
+            <div
+              class="my-auto mx-md-5 px-md-5 right"
+              style="text-align: justify; text-justify: inter-word"
+            >
+              <h3 class="text-white">Quotes of the day is</h3>
+              <small class="text-white">{{ quote.indo }}</small>
+              <h5 class="text-white">by: {{ quote.character }}</h5>
             </div>
           </div>
         </div>
