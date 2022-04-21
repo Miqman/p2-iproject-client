@@ -61,7 +61,7 @@ export default {
         </ul>
       </div>
 
-      <div class="card" style="width: 40rem">
+      <div class="card ms-1" style="width: 40rem">
         <div class="card-header text-center">Featured</div>
         <div class="card-body">
           <h5 class="card-title">Synopsis</h5>

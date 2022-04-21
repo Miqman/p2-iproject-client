@@ -13,8 +13,12 @@ export const useJikanStore = defineStore({
       genres: "",
       newProducer: "",
       user: "",
+      count: 0,
       profile: [],
       favData: [],
+      q: "",
+
+      quote: [],
       isProfile: false,
       isLogin: false,
     };
@@ -29,7 +33,7 @@ export const useJikanStore = defineStore({
         file.append("bio", data.bio);
         file.append("imageUrl", data.imageUrl);
 
-        console.log(file, "<<<<<<<");
+        // console.log(file, "<<<<<<<");
         const res = await axios({
           method: "post",
           url: `http://localhost:3000/profileAdd`,
@@ -41,10 +45,21 @@ export const useJikanStore = defineStore({
 
         this.showProfile();
         this.router.push("/profile");
+        Swal.fire({
+          title: res.statusText,
+          icon: "success",
+          showConfirmButton: "Ok",
+        });
         // console.log(res, "<<<<<");
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
 
@@ -69,6 +84,12 @@ export const useJikanStore = defineStore({
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
 
@@ -84,9 +105,44 @@ export const useJikanStore = defineStore({
         this.user = localStorage.name;
         this.isLogin = true;
         this.router.push("/");
+        Swal.fire({
+          title: res.statusText,
+          icon: "success login",
+          showConfirmButton: "Ok",
+        });
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    },
+
+    async registerHandle(regist) {
+      // console.log(regist, "<<<<<<<<<");
+      try {
+        const res = await axios.post(`${baseUrl}/register`, regist);
+        // console.log(res);
+
+        this.router.push("/login");
+        Swal.fire({
+          title: res.statusText,
+          icon: "success register",
+          showConfirmButton: "Ok",
+        });
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
 
@@ -101,6 +157,12 @@ export const useJikanStore = defineStore({
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
     async getPopular() {
@@ -114,24 +176,52 @@ export const useJikanStore = defineStore({
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
 
-    async showAnime() {
+    async showAnime(dQuery) {
       try {
-        const res = await axios.get(`http://localhost:3000/anime`);
-        // console.log(res.data.data.data, "<<<<<<<");
+        const { page, q } = dQuery;
 
-        this.allAnime = res.data.data.data;
-        // console.log(res.data.data.data, "><><><><");
+        const res = await axios.get(`http://localhost:3000/anime`, {
+          params: { page, q },
+        });
+
+        this.allAnime = res.data.pagination.data;
+        // console.log(
+        //   res.data.pagination.pagination.last_visible_page,
+        //   "><><><><"
+        // );
+        // console.log(res.data.pagination.data, "=======");
+        this.count = Math.ceil(
+          +res.data.pagination.pagination.last_visible_page / 25
+        );
+        Swal.fire({
+          title: res.statusText,
+          icon: "success",
+          showConfirmButton: "Ok",
+        });
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
 
     async showDetail(id) {
       try {
+        console.log(id, "<<<<<<<");
         const res = await axios({
           method: "get",
           url: `${baseUrl}/anime/${id}`,
@@ -149,11 +239,22 @@ export const useJikanStore = defineStore({
         producer = producer.map((el) => el.name);
         this.newProducer = producer.join(", ");
 
-        // console.log(this.animeDetail);
+        // console.log(this.animeDetail, "<><><><><>");
         this.router.push(`/detail/${id}`);
+        Swal.fire({
+          title: res.statusText,
+          icon: "success",
+          showConfirmButton: "Ok",
+        });
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
 
@@ -168,9 +269,20 @@ export const useJikanStore = defineStore({
         });
 
         this.router.push("/profile");
+        Swal.fire({
+          title: res.statusText,
+          icon: "success",
+          showConfirmButton: "Ok",
+        });
       } catch (error) {
         console.log(error);
         console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
 
@@ -185,6 +297,64 @@ export const useJikanStore = defineStore({
         });
         this.favData = res.data.data;
         // console.log(this.favData, "<<<<<<<<");
+        Swal.fire({
+          title: res.statusText,
+          icon: "success",
+          showConfirmButton: "Ok",
+        });
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+        Swal.fire({
+          title: error.response.statusText,
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    },
+
+    async btnDelete(id) {
+      // console.log(id, "<><><><><>");
+      try {
+        const res = await axios({
+          method: "delete",
+          url: `http://localhost:3000/delete/${id}`,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
+
+        this.showProfile();
+        this.showFav();
+        this.router.push("/profile");
+
+        Swal.fire({
+          title: res.statusText,
+          icon: "success",
+          showConfirmButton: "Ok",
+        });
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+        Swal.fire({
+          title: error.response.data.message,
+          text: error.response.data.statusCode,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    },
+
+    async quoteRandom() {
+      try {
+        const res = await axios({
+          method: "get",
+          url: `https://katanime.vercel.app/api/getrandom`,
+        });
+
+        this.quote = res.data.result[0];
+        // console.log(res.data.result, "><><><><");
       } catch (error) {
         console.log(error);
         console.log(error.response);

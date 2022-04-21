@@ -1,136 +1,267 @@
-<script></script>
+<script>
+import { mapActions, mapState } from "pinia";
+import { useJikanStore } from "../stores/jikan";
+
+export default {
+  data() {
+    return {
+      register: {
+        username: "",
+        email: "",
+        password: "",
+      },
+    };
+  },
+
+  methods: {
+    ...mapActions(useJikanStore, ["registerHandle", "quoteRandom"]),
+  },
+  computed: {
+    ...mapState(useJikanStore, ["quote"]),
+  },
+  created() {
+    this.quoteRandom();
+  },
+};
+</script>
 
 <template>
-  <section
-    class="vh-100 bg-image"
-    style="background-image: url('../assets/bg.jpg')"
-  >
-    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-      <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-            <div class="card" style="border-radius: 15px">
-              <div class="card-body p-5">
-                <h2 class="text-uppercase text-center mb-5">
-                  Create an account
-                </h2>
-
-                <form>
-                  <div class="form-outline mb-4">
-                    <input
-                      type="text"
-                      id="form3Example1cg"
-                      class="form-control form-control-lg"
-                    />
-                    <label class="form-label" for="form3Example1cg"
-                      >Your Name</label
-                    >
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input
-                      type="email"
-                      id="form3Example3cg"
-                      class="form-control form-control-lg"
-                    />
-                    <label class="form-label" for="form3Example3cg"
-                      >Your Email</label
-                    >
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input
-                      type="password"
-                      id="form3Example4cg"
-                      class="form-control form-control-lg"
-                    />
-                    <label class="form-label" for="form3Example4cg"
-                      >Password</label
-                    >
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input
-                      type="password"
-                      id="form3Example4cdg"
-                      class="form-control form-control-lg"
-                    />
-                    <label class="form-label" for="form3Example4cdg"
-                      >Repeat your password</label
-                    >
-                  </div>
-
-                  <div class="form-check d-flex justify-content-center mb-5">
-                    <input
-                      class="form-check-input me-2"
-                      type="checkbox"
-                      value=""
-                      id="form2Example3cg"
-                    />
-                    <label class="form-check-label" for="form2Example3g">
-                      I agree all statements in
-                      <a href="#!" class="text-body"><u>Terms of service</u></a>
-                    </label>
-                  </div>
-
-                  <div class="d-flex justify-content-center">
-                    <button
-                      type="button"
-                      class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
-                    >
-                      Register
-                    </button>
-                  </div>
-
-                  <p class="text-center text-muted mt-5 mb-0">
-                    Have already an account?
-                    <a href="#!" class="fw-bold text-body"><u>Login here</u></a>
-                  </p>
-                </form>
+  <div class="body-div">
+    <div class="container px-4 py-5 mx-auto">
+      <div class="card card0">
+        <div class="d-flex flex-lg-row flex-column-reverse">
+          <div class="card card1">
+            <div class="row justify-content-center my-auto">
+              <div class="col-md-8 col-10 my-5">
+                <div class="row justify-content-center px-3 mb-3">
+                  <img id="logo" src="../assets/logo.png" />
+                </div>
+                <h3 class="mb-5 text-center heading">Register</h3>
+                <h6 class="msg-info">Please Register to your account</h6>
+                <div class="form-group">
+                  <label class="form-control-label text-muted">Username</label>
+                  <input
+                    type="text"
+                    id="email"
+                    class="form-control"
+                    v-model="register.username"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label text-muted">Email</label>
+                  <input
+                    type="text"
+                    id="email"
+                    class="form-control"
+                    v-model="register.email"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label text-muted">Password</label>
+                  <input
+                    type="password"
+                    id="psw"
+                    class="form-control"
+                    v-model="register.password"
+                  />
+                </div>
+                <div class="row justify-content-center my-3 px-3">
+                  <button
+                    class="btn-block btn-color"
+                    @click.prevent="registerHandle(register)"
+                  >
+                    Register
+                  </button>
+                </div>
               </div>
+            </div>
+            <div class="bottom text-center mb-5">
+              <p href="#" class="sm-text mx-auto mb-3">have an account?</p>
+              <button
+                class="btn btn-white ml-2"
+                @click.prevent="this.$router.push('/login')"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+          <div class="card card2">
+            <div
+              class="my-auto mx-md-5 px-md-5 right"
+              style="text-align: justify; text-justify: inter-word"
+            >
+              <h3 class="text-white">Quotes of the day is</h3>
+              <small class="text-white">{{ quote.indo }}</small>
+              <h5 class="text-white">by: {{ quote.character }}</h5>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <style scoped>
-.gradient-custom-3 {
-  /* fallback for old browsers */
-  background: #84fab0;
-
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(
-    to right,
-    rgba(132, 250, 176, 0.5),
-    rgba(143, 211, 244, 0.5)
-  );
-
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(
-    to right,
-    rgba(132, 250, 176, 0.5),
-    rgba(143, 211, 244, 0.5)
-  );
+.body-div {
+  color: #000;
+  overflow-x: hidden;
+  height: 100%;
+  background-image: url("../assets/bg.jpg");
+  background-repeat: no-repeat;
 }
-.gradient-custom-4 {
-  /* fallback for old browsers */
-  background: #84fab0;
 
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(
-    to right,
-    rgba(132, 250, 176, 1),
-    rgba(143, 211, 244, 1)
-  );
+input,
+textarea {
+  background-color: #f3e5f5;
+  border-radius: 50px !important;
+  padding: 12px 15px 12px 15px !important;
+  width: 100%;
+  box-sizing: border-box;
+  border: none !important;
+  border: 1px solid #f3e5f5 !important;
+  font-size: 16px !important;
+  color: #000 !important;
+  font-weight: 400;
+}
 
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(
-    to right,
-    rgba(132, 250, 176, 1),
-    rgba(143, 211, 244, 1)
-  );
+input:focus,
+textarea:focus {
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border: 1px solid #d500f9 !important;
+  outline-width: 0;
+  font-weight: 400;
+}
+
+button:focus {
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline-width: 0;
+}
+
+.card {
+  border-radius: 0;
+  border: none;
+}
+
+.card1 {
+  width: 50%;
+  padding: 40px 30px 10px 30px;
+}
+
+.card2 {
+  width: 50%;
+  background-image: linear-gradient(to right, #ffd54f, #d500f9);
+}
+
+#logo {
+  width: 200px;
+  height: 200px;
+}
+
+.heading {
+  margin-bottom: 60px !important;
+}
+
+::placeholder {
+  color: #000 !important;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #000 !important;
+}
+
+::-ms-input-placeholder {
+  color: #000 !important;
+}
+
+.form-control-label {
+  font-size: 12px;
+  margin-left: 15px;
+}
+
+.msg-info {
+  padding-left: 15px;
+  margin-bottom: 30px;
+}
+
+.btn-color {
+  border-radius: 50px;
+  color: #fff;
+  background-image: linear-gradient(to right, #ffd54f, #d500f9);
+  padding: 15px;
+  cursor: pointer;
+  border: none !important;
+  margin-top: 40px;
+}
+
+.btn-color:hover {
+  color: #fff;
+  background-image: linear-gradient(to right, #d500f9, #ffd54f);
+}
+
+.btn-white {
+  border-radius: 50px;
+  color: #d500f9;
+  background-color: #fff;
+  padding: 8px 40px;
+  cursor: pointer;
+  border: 2px solid #d500f9 !important;
+}
+
+.btn-white:hover {
+  color: #fff;
+  background-image: linear-gradient(to right, #ffd54f, #d500f9);
+}
+
+a {
+  color: #000;
+}
+
+a:hover {
+  color: #000;
+}
+
+.bottom {
+  width: 100%;
+  margin-top: 50px !important;
+}
+
+.sm-text {
+  font-size: 15px;
+}
+
+@media screen and (max-width: 992px) {
+  .card1 {
+    width: 100%;
+    padding: 40px 30px 10px 30px;
+  }
+
+  .card2 {
+    width: 100%;
+  }
+
+  .right {
+    margin-top: 100px !important;
+    margin-bottom: 100px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 10px !important;
+  }
+
+  .card2 {
+    padding: 50px;
+  }
+
+  .right {
+    margin-top: 50px !important;
+    margin-bottom: 50px !important;
+  }
 }
 </style>
