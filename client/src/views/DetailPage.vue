@@ -84,13 +84,15 @@ export default {
           <p v-if="!animeDetail.trailer.embed_url" class="card-text">
             Trailer not found
           </p>
-          <iframe
-            width="500"
-            height="285"
-            :src="animeDetail.trailer.embed_url"
-            frameborder="0"
-            v-if="animeDetail.trailer.embed_url"
-          ></iframe>
+          <div class="ratio ratio-21x9">
+            <iframe
+              :src="animeDetail.trailer.embed_url"
+              frameborder="0"
+              allowfullscreen
+              v-if="animeDetail.trailer.embed_url"
+            ></iframe>
+          </div>
+
           <br />
           <a
             class="btn btn-outline-success"
