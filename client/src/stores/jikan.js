@@ -1,6 +1,10 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+// http://localhost:3000
+// http://localhost:3000/
+// https://minfonime.herokuapp.com/
+// http://localhost:3000
 let baseUrl = "http://localhost:3000";
 export const useJikanStore = defineStore({
   id: "jikan",
@@ -45,11 +49,7 @@ export const useJikanStore = defineStore({
 
         this.showProfile();
         this.router.push("/profile");
-        Swal.fire({
-          title: res.statusText,
-          icon: "success",
-          showConfirmButton: "Ok",
-        });
+
         // console.log(res, "<<<<<");
       } catch (error) {
         console.log(error);
@@ -202,11 +202,6 @@ export const useJikanStore = defineStore({
         this.count = Math.ceil(
           +res.data.pagination.pagination.last_visible_page / 25
         );
-        Swal.fire({
-          title: res.statusText,
-          icon: "success",
-          showConfirmButton: "Ok",
-        });
       } catch (error) {
         console.log(error);
         console.log(error.response);
@@ -355,6 +350,28 @@ export const useJikanStore = defineStore({
 
         this.quote = res.data.result[0];
         // console.log(res.data.result, "><><><><");
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+      }
+    },
+
+    async multiUpload(data) {
+      try {
+        let file = new FormData();
+        for (let i = 0; i < data.length; i++) {
+          file.append("imageUrl", data[i]);
+          console.log(data[i], "<<<<<<");
+        }
+        console.log(file, "<<<<<<");
+        const res = await axios({
+          method: "post",
+          url: `http://localhost:3000/multifile`,
+          data: file,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
       } catch (error) {
         console.log(error);
         console.log(error.response);

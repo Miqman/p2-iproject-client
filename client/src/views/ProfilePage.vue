@@ -5,12 +5,26 @@ import NavBar from "../components/NavBar.vue";
 import { useJikanStore } from "../stores/jikan";
 
 export default {
+  data() {
+    return {
+      imageUrl: "",
+    };
+  },
   components: {
     FormProfileVue,
     NavBar,
   },
   methods: {
-    ...mapActions(useJikanStore, ["showProfile", "showFav", "btnDelete"]),
+    ...mapActions(useJikanStore, [
+      "showProfile",
+      "showFav",
+      "btnDelete",
+      "multiUpload",
+    ]),
+    imgHandle: function (e) {
+      const img = e.target.files;
+      this.imageUrl = img;
+    },
   },
   computed: {
     ...mapState(useJikanStore, ["profile", "favData"]),
@@ -72,6 +86,17 @@ export default {
         </div>
       </div>
       <!-- End of profile section -->
+      <form action="" method="post" enctype="multipart/form-data">
+        <input type="file" @change="imgHandle" multiple />
+        <button
+          class="btn btn-primary btn-lg"
+          id="submitButton"
+          type="submit"
+          @click.prevent="multiUpload(imageUrl)"
+        >
+          Submit
+        </button>
+      </form>
     </div>
     <!-- End of container -->
 
