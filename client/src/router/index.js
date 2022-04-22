@@ -13,6 +13,7 @@ const routes = [
   { path: "/anime", name: "anime", component: AnimePage },
   { path: "/profile", name: "profile", component: ProfilePage },
   { path: "/detail/:id", name: "detail", component: DetailPage },
+  { path: "/:pathMath(.*)*", name: "NotFound", component: LoginPage },
 ];
 
 const router = createRouter({
