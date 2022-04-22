@@ -32,7 +32,7 @@ export default {
       <div class="card" style="width: 20rem">
         <img
           :src="animeDetail.images.jpg.image_url"
-          height="450"
+          height="425"
           class="card-img-top"
           style="object-fit: cover"
           alt="..."
@@ -80,11 +80,18 @@ export default {
           <p class="card-text">
             {{ animeDetail.type }}
           </p>
-          <a
-            :href="animeDetail.trailer.url"
-            class="btn btn-outline-primary me-2"
-            >Trailer</a
-          >
+          <h5 class="card-title">Trailer</h5>
+          <p v-if="!animeDetail.trailer.embed_url" class="card-text">
+            Trailer not found
+          </p>
+          <iframe
+            width="500"
+            height="285"
+            :src="animeDetail.trailer.embed_url"
+            frameborder="0"
+            v-if="animeDetail.trailer.embed_url"
+          ></iframe>
+          <br />
           <a
             class="btn btn-outline-success"
             href=""

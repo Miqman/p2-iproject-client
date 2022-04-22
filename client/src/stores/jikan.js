@@ -1,7 +1,11 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-let baseUrl = "http://localhost:3000";
+// http://localhost:3000
+// https://minfonime.herokuapp.com/
+// https://minfonime.herokuapp.com/
+// http://localhost:3000
+let baseUrl = "https://minfonime.herokuapp.com";
 export const useJikanStore = defineStore({
   id: "jikan",
   state() {
@@ -36,7 +40,7 @@ export const useJikanStore = defineStore({
         // console.log(file, "<<<<<<<");
         const res = await axios({
           method: "post",
-          url: `http://localhost:3000/profileAdd`,
+          url: `https://minfonime.herokuapp.com/profileAdd`,
           data: file,
           headers: {
             access_token: localStorage.access_token,
@@ -45,11 +49,7 @@ export const useJikanStore = defineStore({
 
         this.showProfile();
         this.router.push("/profile");
-        Swal.fire({
-          title: res.statusText,
-          icon: "success",
-          showConfirmButton: "Ok",
-        });
+
         // console.log(res, "<<<<<");
       } catch (error) {
         console.log(error);
@@ -67,7 +67,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "get",
-          url: `http://localhost:3000/profile`,
+          url: `https://minfonime.herokuapp.com/profile`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -167,7 +167,7 @@ export const useJikanStore = defineStore({
     },
     async getPopular() {
       try {
-        const res = await axios.get("http://localhost:3000/popular");
+        const res = await axios.get("https://minfonime.herokuapp.com/popular");
 
         this.popular = res.data.data;
 
@@ -189,7 +189,7 @@ export const useJikanStore = defineStore({
       try {
         const { page, q } = dQuery;
 
-        const res = await axios.get(`http://localhost:3000/anime`, {
+        const res = await axios.get(`https://minfonime.herokuapp.com/anime`, {
           params: { page, q },
         });
 
@@ -202,11 +202,6 @@ export const useJikanStore = defineStore({
         this.count = Math.ceil(
           +res.data.pagination.pagination.last_visible_page / 25
         );
-        Swal.fire({
-          title: res.statusText,
-          icon: "success",
-          showConfirmButton: "Ok",
-        });
       } catch (error) {
         console.log(error);
         console.log(error.response);
@@ -290,7 +285,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "get",
-          url: `http://localhost:3000/fav`,
+          url: `https://minfonime.herokuapp.com/fav`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -319,7 +314,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "delete",
-          url: `http://localhost:3000/delete/${id}`,
+          url: `https://minfonime.herokuapp.com/delete/${id}`,
           headers: {
             access_token: localStorage.access_token,
           },
