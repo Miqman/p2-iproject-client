@@ -2,10 +2,10 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 // http://localhost:3000
-// https://minfonime.herokuapp.com/
+// http://localhost:3000/
 // https://minfonime.herokuapp.com/
 // http://localhost:3000
-let baseUrl = "https://minfonime.herokuapp.com";
+let baseUrl = "http://localhost:3000";
 export const useJikanStore = defineStore({
   id: "jikan",
   state() {
@@ -40,7 +40,7 @@ export const useJikanStore = defineStore({
         // console.log(file, "<<<<<<<");
         const res = await axios({
           method: "post",
-          url: `https://minfonime.herokuapp.com/profileAdd`,
+          url: `http://localhost:3000/profileAdd`,
           data: file,
           headers: {
             access_token: localStorage.access_token,
@@ -67,7 +67,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "get",
-          url: `https://minfonime.herokuapp.com/profile`,
+          url: `http://localhost:3000/profile`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -167,7 +167,7 @@ export const useJikanStore = defineStore({
     },
     async getPopular() {
       try {
-        const res = await axios.get("https://minfonime.herokuapp.com/popular");
+        const res = await axios.get("http://localhost:3000/popular");
 
         this.popular = res.data.data;
 
@@ -189,7 +189,7 @@ export const useJikanStore = defineStore({
       try {
         const { page, q } = dQuery;
 
-        const res = await axios.get(`https://minfonime.herokuapp.com/anime`, {
+        const res = await axios.get(`http://localhost:3000/anime`, {
           params: { page, q },
         });
 
@@ -285,7 +285,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "get",
-          url: `https://minfonime.herokuapp.com/fav`,
+          url: `http://localhost:3000/fav`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -314,7 +314,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "delete",
-          url: `https://minfonime.herokuapp.com/delete/${id}`,
+          url: `http://localhost:3000/delete/${id}`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -350,6 +350,28 @@ export const useJikanStore = defineStore({
 
         this.quote = res.data.result[0];
         // console.log(res.data.result, "><><><><");
+      } catch (error) {
+        console.log(error);
+        console.log(error.response);
+      }
+    },
+
+    async multiUpload(data) {
+      try {
+        let file = new FormData();
+        for (let i = 0; i < data.length; i++) {
+          file.append("imageUrl", data[i]);
+          console.log(data[i], "<<<<<<");
+        }
+        console.log(file, "<<<<<<");
+        const res = await axios({
+          method: "post",
+          url: `http://localhost:3000/multifile`,
+          data: file,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+        });
       } catch (error) {
         console.log(error);
         console.log(error.response);
