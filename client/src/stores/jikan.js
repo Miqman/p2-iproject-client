@@ -5,7 +5,8 @@ import axios from "axios";
 // http://localhost:3000/
 // https://minfonime.herokuapp.com/
 // http://localhost:3000
-let baseUrl = "http://localhost:3000";
+// let baseUrl = "http://localhost:3000";
+let baseUrl = "https://tiny-cyan-nightingale-hose.cyclic.app";
 export const useJikanStore = defineStore({
   id: "jikan",
   state() {
@@ -30,17 +31,17 @@ export const useJikanStore = defineStore({
   getters: {},
   actions: {
     async addProfile(data) {
-      console.log(data, "=========");
+      // console.log(data, "=========");
       try {
         let file = new FormData();
         file.append("name", data.name);
         file.append("bio", data.bio);
         file.append("imageUrl", data.imageUrl);
 
-        // console.log(file, "<<<<<<<");
+        console.log(file, "<<<<<<<");
         const res = await axios({
           method: "post",
-          url: `http://localhost:3000/profileAdd`,
+          url: `${baseUrl}/profileAdd`,
           data: file,
           headers: {
             access_token: localStorage.access_token,
@@ -67,7 +68,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "get",
-          url: `http://localhost:3000/profile`,
+          url: `${baseUrl}/profile`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -167,7 +168,7 @@ export const useJikanStore = defineStore({
     },
     async getPopular() {
       try {
-        const res = await axios.get("http://localhost:3000/popular");
+        const res = await axios.get(baseUrl + "/popular");
 
         this.popular = res.data.data;
 
@@ -189,7 +190,7 @@ export const useJikanStore = defineStore({
       try {
         const { page, q } = dQuery;
 
-        const res = await axios.get(`http://localhost:3000/anime`, {
+        const res = await axios.get(`${baseUrl}/anime`, {
           params: { page, q },
         });
 
@@ -285,7 +286,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "get",
-          url: `http://localhost:3000/fav`,
+          url: `${baseUrl}/fav`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -314,7 +315,7 @@ export const useJikanStore = defineStore({
       try {
         const res = await axios({
           method: "delete",
-          url: `http://localhost:3000/delete/${id}`,
+          url: `${baseUrl}/delete/${id}`,
           headers: {
             access_token: localStorage.access_token,
           },
@@ -359,14 +360,17 @@ export const useJikanStore = defineStore({
     async multiUpload(data) {
       try {
         let file = new FormData();
+        // file.append("name", "miku");
+        // file.append("bio", "musik");
+        // file.append("imageUrl", "sds");
         for (let i = 0; i < data.length; i++) {
           file.append("imageUrl", data[i]);
-          console.log(data[i], "<<<<<<");
+          console.log(file);
         }
         console.log(file, "<<<<<<");
         const res = await axios({
           method: "post",
-          url: `http://localhost:3000/multifile`,
+          url: `${baseUrl}/multifile`,
           data: file,
           headers: {
             access_token: localStorage.access_token,
